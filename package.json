@@ -1,0 +1,18 @@
+{
+  "name": "esbuild-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "esbuild src/app.jsx --bundle --outfile=out.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "esbuild": "0.8.0",
+    "react": "17.0.1",
+    "react-dom": "17.0.1"
+  }
+}
