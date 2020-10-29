@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "esbuild src/app.jsx --bundle --outfile=out.js",
-    "build:hello": "esbuild src/hello.jsx --bundle --outfile=dist/hello.js"
+    "build:hello": "esbuild src/hello.jsx --bundle --outfile=dist/hello.js --define:process.env.NODE_ENV='\"production\"'"
   },
   "keywords": [],
   "author": "",
