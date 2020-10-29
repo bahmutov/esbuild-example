@@ -1,17 +1,10 @@
 /// <reference types="cypress" />
 
-// ***********************************************************
-// This example plugins/index.js can be used to load plugins
-//
-// You can change the location of this file or turn off loading
-// the plugins file with the 'pluginsFile' configuration option.
-//
-// You can read more here:
-// https://on.cypress.io/plugins-guide
-// ***********************************************************
+// simple one-shot bundling mode
+// https://esbuild.github.io/api/#js-specific-details
+const esbuild = require('esbuild')
 
-// This function is called when a project is opened or re-opened (e.g. due to
-// the project's config changing)
+const timings = {}
 
 /**
  * @type {Cypress.PluginConfig}
@@ -19,4 +12,30 @@
 module.exports = (on, config) => {
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
+  on('file:preprocessor', (inFile) => {
+    // console.log('processing file %o', inFile)
+
+    timings[inFile.filePath] = + new Date()
+
+    return esbuild.build({
+      entryPoints: [inFile.filePath],
+      bundle: true,
+      outfile: inFile.outputPath,
+    }).then(value => {
+      if (value.warnings && value.warnings.length) {
+        console.warn(value.warnings)
+      }
+
+      const finished = + new Date()
+      if (timings[inFile.filePath]) {
+        const elapsed = finished - timings[inFile.filePath]
+        console.log('bundling %s took %dms', inFile.filePath, elapsed)
+      }
+      return inFile.outputPath
+    })
+    .catch((err) => {
+      console.error(err)
+    })
+
+  })
 }
