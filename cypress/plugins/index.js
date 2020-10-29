@@ -21,6 +21,9 @@ module.exports = (on, config) => {
       entryPoints: [inFile.filePath],
       bundle: true,
       outfile: inFile.outputPath,
+      define: {
+        'process.env.NODE_ENV': '"development"'
+      }
     }).then(value => {
       if (value.warnings && value.warnings.length) {
         console.warn(value.warnings)
